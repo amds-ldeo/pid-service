@@ -1,3 +1,4 @@
+require('dotenv').config();
 var request = require('request');
 var parser = require('../parser/doi');
 
@@ -5,7 +6,8 @@ var parser = require('../parser/doi');
 //Get metadata of the reference by DOI
 function getRefByDoi(req, res, next) {
 
-    request('https://api.crossref.org/works/' + req.params.doi, function (error, response, body) {
+    let requestUrl = process.env.CROSSREF_API_BASE_URL + req.params.doi;
+    request(requestUrl, function (error, response, body) {
         if (response.statusCode == 200) {
             let result = {};
             let parseResult = parser.parseDOI(JSON.parse(body));

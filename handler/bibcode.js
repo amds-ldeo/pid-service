@@ -1,15 +1,17 @@
+require('dotenv').config();
 var request = require('request');
 var parser = require('../parser/bibcode');
 
 
+
 //Get metadata of the reference by Bibcode
 function getRefByBibcode(req, res, next) {
-
+    let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_BIBCODE_QUERY
+     + encodeURIComponent(req.params.bibcode) + process.env.ADS_API_FIELDS_RETURN;
     let requestOpt = {
-        url: 'https://api.adsabs.harvard.edu/v1/search/query?q=bibcode:' + encodeURIComponent(req.params.bibcode) + 
-        '&fl=title,author,volume,issue,year,page_range,doctype,pub,doi,bibcode,orcid_pub,orcid_user,orcid_other',
+        url: requestUrl,
         auth: {
-            'bearer': 'qokRTSpeCLdB5aIkuhGUFRJW0ARp2JeFyukKIvXh'
+            'bearer': process.env.ADS_API_KEY
         }
 
     }
