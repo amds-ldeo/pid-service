@@ -44,10 +44,22 @@ module.exports = {
                         }
                     }
 
+                    let affiliation;
+                    if (!!adsData.docs[0]['aff']) {
+                        if (!!adsData.docs[0]['aff'][j]) {
+                            if (adsData.docs[0]['aff'][j] != "-") {
+                                affiliation =  adsData.docs[0]['aff'][j];
+                            }
+                        }
+                    }
                     // Skip if orcid = null, "", undefined          
                     if (!!orcid) {
                         Object.assign(author,{orcid: orcid});
                     }
+                    // Skip if affiliation = null, "", undefined          
+                    if (!!affiliation) {
+                        Object.assign(author,{affiliation: affiliation});
+                    }                    
                     // Skip if familyName = null, "", undefined          
                     if (!!nameArray[0]) {
                         Object.assign(author,{familyName: nameArray[0]});
