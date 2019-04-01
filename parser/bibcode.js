@@ -88,7 +88,10 @@ module.exports = {
             }
             //skip if title="",null,undefined
             if(!!adsData.docs[0]['title'][0]) {
-                Object.assign(result,{title: adsData.docs[0]['title'][0]});
+                // Remove html tag like <SUP></SUP> from title
+                let re = /<(.|\n)*?>/g;
+                let title  = adsData.docs[0]['title'][0].replace(re,"");
+                Object.assign(result,{title: title});
             }
             //skip if pub="",null,undefined
             if(!!adsData.docs[0]['pub']) {
