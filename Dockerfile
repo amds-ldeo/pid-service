@@ -25,4 +25,4 @@ EXPOSE 3000
 # Show current folder structure in logs
 RUN ls -al -R
 
-CMD [ "pm2-runtime", "start", "ecosystem.config.js --env production"]
+CMD [ "pm2-runtime", "start", "ecosystem.config.js"]
