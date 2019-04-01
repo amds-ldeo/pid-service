@@ -1,6 +1,22 @@
-# PID Service Metadata JSON Format
+# PID Service Reference Metadata JSON Format
+
+## Response code
+
+| code  | Description |
+|-------|------|
+| 200 | Success |
+| 403 | Resource not found |
+| others | Error |
 
 ## Main metadata
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| status | String | Required | ok or fail |
+| count | Integer | Required | 1 or 0 |
+| data | Object | Required | Resolved metadata |
+
+
+## Data component metadata
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
