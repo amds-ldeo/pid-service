@@ -9,11 +9,12 @@ apk add --no-cache bash git openssh
 RUN env NODE_ENV=production
 
 # Bundle APP files
-COPY .env .
+
 RUN git clone https://github.com/amds-ldeo/pid-service.git
 
 WORKDIR /pid-service
 
+COPY .env .
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
 RUN npm install --production
