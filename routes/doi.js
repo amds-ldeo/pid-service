@@ -4,6 +4,6 @@ var handler = require('../handler/doi');
 
 
 /* GET users listing. */
-router.get('/:doi(*\/*)', handler.getRefByDoi);
+router.get('/doi/:doi(*\/*)', handler.getRefByDoi);
 
 module.exports = router;
