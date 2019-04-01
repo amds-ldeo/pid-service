@@ -12,8 +12,18 @@ module.exports = {
                     sequenceNum = sequenceNum + 1;
                     // Skip if orcid = null, "", undefined          
                     if (!!data.message.author[j].ORCID) {
-                        Object.assign(author,{ORCID: data.message.author[j].ORCID});
+                        let orcid = data.message.author[j].ORCID;
+                        let re = /^https?:\/\/orcid.org\//;
+                        Object.assign(author,{ORCID: orcid.replace(re,'')});
                     }
+                    if (!!data.message.author[j].affiliation && Object.keys(data.message.author[j].affiliation).length>0) {
+                        let affiliations = [];
+                        for (k=0;k<data.message.author[j].affiliation.length;k++) {
+                            let affiliation = data.message.author[j].affiliation[k]["name"];
+                            affiliations.push(affiliation);
+                        }
+                        Object.assign(author,{affiliation: affiliations});
+                    }                    
                     // Skip if familyName = null, "", undefined          
                     if (!!data.message.author[j].family) {
                         Object.assign(author,{familyName: data.message.author[j].family});
@@ -36,7 +46,7 @@ module.exports = {
                 Object.assign(result,{doi: data.message.DOI});
             }
             // Skip if title = null, "", undefined
-            if (!!data.message.title[0]) {
+            if (!!data.message.title) {
                 Object.assign(result,{title: data.message.title[0]});
             }
             
@@ -45,16 +55,20 @@ module.exports = {
                 Object.assign(result,{publisher: data.message.publisher});
             }
             // Skip if containerTitle = null, "", undefined         
-            if (!!data.message['container-title'][0]) {
+            if (!!data.message['container-title']) {
                 Object.assign(result,{containerTitle: data.message['container-title'][0]});
             }
 
             // Skip if publicationYear = null, "", undefined         
-            if (!!data.message['published-print']['date-parts'][0][0]){
-                Object.assign(result,{publicationYear: data.message['published-print']['date-parts'][0][0]});
+            if (!!data.message['published-print']){
+                if (!!data.message['published-print']['date-parts']) {
+                    Object.assign(result,{publicationYear: data.message['published-print']['date-parts'][0][0]});
+                }
             }
-            else if (!!data.message['published-online']['date-parts'][0][0]){
-                Object.assign(result,{publicationYear: data.message['published-online']['date-parts'][0][0]});
+            else if (!!data.message['published-online']){
+                if (!!data.message['published-online']['date-parts']) {
+                    Object.assign(result,{publicationYear: data.message['published-online']['date-parts'][0][0]});
+                }                
             }
 
             // Skip if type = null, "", undefined         
