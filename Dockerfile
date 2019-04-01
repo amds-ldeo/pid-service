@@ -4,7 +4,6 @@ FROM keymetrics/pm2:latest-alpine
 RUN apk update && apk upgrade && \
 apk add --no-cache bash git openssh
 
-WORKDIR /pid-service
 
 # Set NODE_ENV to "production"
 RUN env NODE_ENV=production
@@ -12,6 +11,8 @@ RUN env NODE_ENV=production
 # Bundle APP files
 COPY .env .
 RUN git clone https://github.com/amds-ldeo/pid-service.git
+
+WORKDIR /pid-service
 
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
