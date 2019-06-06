@@ -62,12 +62,12 @@ module.exports = {
             // Skip if publicationYear = null, "", undefined         
             if (!!data.message['published-print']){
                 if (!!data.message['published-print']['date-parts']) {
-                    Object.assign(result,{publicationYear: data.message['published-print']['date-parts'][0][0]});
+                    Object.assign(result,{publicationYear: data.message['published-print']['date-parts'][0][0].toString()});
                 }
             }
             else if (!!data.message['published-online']){
                 if (!!data.message['published-online']['date-parts']) {
-                    Object.assign(result,{publicationYear: data.message['published-online']['date-parts'][0][0]});
+                    Object.assign(result,{publicationYear: data.message['published-online']['date-parts'][0][0].toString()});
                 }                
             }
 
