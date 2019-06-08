@@ -41,7 +41,7 @@ function getRefByBibcode(req, res, next) {
 function getRefByDoi(req, res, next) {
     let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_DOI_QUERY
      + encodeURIComponent('"'+req.params.doi+'"') + process.env.ADS_API_FIELDS_RETURN;
-
+     
     let requestOpt = {
         url: requestUrl,
         auth: {

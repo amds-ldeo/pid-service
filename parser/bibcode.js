@@ -87,12 +87,15 @@ module.exports = {
                 Object.assign(result,{doi: adsData.docs[0]['doi'][0]});
             }
             //skip if title="",null,undefined
-            if(!!adsData.docs[0]['title'][0]) {
-                // Remove html tag like <SUP></SUP> from title
-                let re = /<(.|\n)*?>/g;
-                let title  = adsData.docs[0]['title'][0].replace(re,"");
-                Object.assign(result,{title: title});
+            if (typeof(adsData.docs[0]['title']) != "undefined") {
+                if(!!adsData.docs[0]['title'][0]) {
+                    // Remove html tag like <SUP></SUP> from title
+                    let re = /<(.|\n)*?>/g;
+                    let title  = adsData.docs[0]['title'][0].replace(re,"");
+                    Object.assign(result,{title: title});
+                }
             }
+
             //skip if pub="",null,undefined
             if(!!adsData.docs[0]['pub']) {
                 Object.assign(result,{containerTitle: adsData.docs[0]['pub']});
