@@ -9,10 +9,7 @@ apk add --no-cache bash git openssh
 RUN env NODE_ENV=production
 
 # Bundle APP files
-ARG SHA=LATEST
-RUN SHA=${SHA} \
-    git clone https://github.com/amds-ldeo/pid-service.git
-
+RUN git clone https://github.com/amds-ldeo/pid-service.git
 WORKDIR /pid-service
 
 COPY .env .
