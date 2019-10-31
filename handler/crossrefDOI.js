@@ -1,6 +1,6 @@
 require('dotenv').config();
 var request = require('request');
-var parser = require('../parser/doi');
+var parser = require('../parser/crossrefDOI');
 
 
 //Get metadata of the reference by DOI
