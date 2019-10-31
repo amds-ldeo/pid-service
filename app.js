@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bibcodeRouter = require('./routes/bibcode');
 var doiRouter = require('./routes/doi');
+var dataciteDOIRouter = require('./routes/dataciteDOI');
+
 
 
 var app = express();
@@ -25,5 +27,7 @@ app.use('/users', usersRouter);
 app.use('/ads', bibcodeRouter);
 
 app.use('/crossref', doiRouter);
+
+app.use('/datacite', dataciteDOIRouter);
 
 module.exports = app;
