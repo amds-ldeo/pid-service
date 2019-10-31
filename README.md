@@ -1,5 +1,11 @@
 PID service Retrieve and customize metadata of works(paper, dataset, etc.) using PID like DOI, BIBCODE, etc. from trusted PID service provider Crossref, Datacite, ADS, etc. 
 
+# API Endpoints
+* {domainName}/ads/doi/{doi}
+* {domainName}/ads/bibcode/{bibcode}
+* {domainName}/crossref/doi/{doi}
+* {domainName}/datacite/doi/{doi}
+
 # Metadata Properties
 
 ## Response code
@@ -22,7 +28,7 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 
 | Field | Type | Obligation | Description |
 |-------|------|----------|-------------|
-| identifiers | Array | Mandatory |  |
+| identifiers | Array of identifier | Mandatory |  |
 | title | String | Mandatory | Title of work |
 | publisher | String | Optional | Name of work's publisher |
 | containerTitle | String | Optional | Full titles of the containing work (usually a book or journal) |
