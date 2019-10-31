@@ -1,4 +1,6 @@
-# PID Service Reference Metadata JSON Format
+PID service Retrieve and customize metadata of works(paper, dataset, etc.) using PID like DOI, BIBCODE, etc. from trusted PID service provider Crossref, Datacite, ADS, etc. 
+
+# Metadata Properties
 
 ## Response code
 
@@ -18,28 +20,34 @@
 
 ## Data component metadata
 
-| Field | Type | Required | Description |
+| Field | Type | Obligation | Description |
 |-------|------|----------|-------------|
-| bibcode | String | No | Bibcode |
-| doi | String | No | DOI |
-| title | String | Yes | Reference title |
-| publisher | String | No | Name of reference's publisher |
-| containerTitle | String | Yes | Full titles of the containing reference (usually a book or journal |
-| publicationYear | Integer | Yes | Year on which the reference was published in print or online  |
-| type | String | Yes | Type of reference |
-| issue | String | No | Issue number of an article's journal |
-| volume | String | No | Volume number of an article's journal |
-| page | String | No | Pages numbers of an article within its journal |
-| authors | Array of author | Yes |  |
+| identifiers | Array | Mandatory |  |
+| title | String | Mandatory | Title of work |
+| publisher | String | Optional | Name of work's publisher |
+| containerTitle | String | Optional | Full titles of the containing work (usually a book or journal) |
+| publicationYear | Integer | Mandatory | Year on which the work was published in print or online  |
+| type | String | Mandatory | Type of work |
+| issue | String | Optional | Issue number of an article's journal |
+| volume | String | Optional | Volume number of an article's journal |
+| page | String | Optional | Pages numbers of an article within its journal |
+| authors | Array of author | Mandatory |  |
+
+### Identifier
+| Field | Type | Obligation | Description | Allowed values |
+|-------|------|----------|-------------|-------------|
+| identifier | String | Mandatory | A unique string that identifiers a resource. | |
+| identifierType | String | Mandatory | The type of identifier | Controlled List Value: DOI, BIBCODE |
+
 
 ### Author
-| Field | Type | Required | Description |
+| Field | Type | Obligation | Description |
 |-------|------|----------|-------------|
-| orcid | String | No | ORCID |
-| affiliation | Array | No |  |
-| familyName | String | Yes |  |
+| orcid | String | Optional | ORCID |
+| affiliation | Array | Optional |  |
+| familyName | String | Mandatory |  |
 | givenName | String | No |  |
-| sequence | Integer | Yes |  |
+| sequence | Integer | Mandatory |  |
 
 
 
