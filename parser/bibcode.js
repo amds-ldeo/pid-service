@@ -78,13 +78,24 @@ module.exports = {
 
                 };
             }
+
+            let identifiers = [];
+
             //skip if bibcode="",null,undefined
             if(!!adsData.docs[0]['bibcode']) {
-                Object.assign(result,{bibcode: adsData.docs[0]['bibcode']});
+                //Object.assign(result,{bibcode: adsData.docs[0]['bibcode']});
+                let identifier = {};
+                Object.assign(identifier,{identifier:adsData.docs[0]['bibcode']});
+                Object.assign(identifier,{identifierType:"BIBCODE"});
+                identifiers.push(identifier);
             }            
             //skip if doi="",null,undefined
             if(!!adsData.docs[0]['doi']) {
-                Object.assign(result,{doi: adsData.docs[0]['doi'][0]});
+                //Object.assign(result,{doi: adsData.docs[0]['doi'][0]});
+                let identifier = {};
+                Object.assign(identifier,{identifier:adsData.docs[0]['doi'][0]});
+                Object.assign(identifier,{identifierType:"DOI"});
+                identifiers.push(identifier);
             }
             //skip if title="",null,undefined
             if (typeof(adsData.docs[0]['title']) != "undefined") {
@@ -94,6 +105,10 @@ module.exports = {
                     let title  = adsData.docs[0]['title'][0].replace(re,"");
                     Object.assign(result,{title: title});
                 }
+            }
+
+            if (identifiers != null) {
+                Object.assign(result,{identifiers: identifiers});
             }
 
             //skip if pub="",null,undefined
