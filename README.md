@@ -13,14 +13,12 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 | code  | Description |
 |-------|------|
 | 200 | Success |
-| 403 | Resource not found |
+| 404 | Resource not found |
 | others | Error |
 
 ## Main metadata
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| status | String | Required | ok or fail |
-| count | Integer | Required | 1 or 0 |
 | data | Object | Required | Resolved metadata |
 
 
