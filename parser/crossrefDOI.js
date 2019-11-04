@@ -43,7 +43,13 @@ module.exports = {
             }
             // Skip if doi = null, "", undefined
             if (!!data.message.DOI) {
-                Object.assign(result,{doi: data.message.DOI});
+                //Object.assign(result,{doi: data.message.DOI});
+                let identifiers = [];
+                let identifier = {};
+                Object.assign(identifier,{identifier:data.message.DOI});
+                Object.assign(identifier,{identifierType:"DOI"});
+                identifiers.push(identifier);
+                Object.assign(result,{identifiers: identifiers});
             }
             // Skip if title = null, "", undefined
             if (!!data.message.title) {
