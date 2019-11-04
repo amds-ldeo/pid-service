@@ -49,7 +49,12 @@ module.exports = {
             }
             // Skip if doi = null, "", undefined
             if (!!toBeParsedData.doi) {
-                Object.assign(result,{doi: toBeParsedData.doi});
+                let identifiers = [];
+                let identifier = {};
+                Object.assign(identifier,{identifier:toBeParsedData.doi});
+                Object.assign(identifier,{identifierType:"DOI"});
+                identifiers.push(identifier);
+                Object.assign(result,{identifiers: identifiers});
             }
             // Skip if title = null, "", undefined
             if (!!toBeParsedData.titles) {             
