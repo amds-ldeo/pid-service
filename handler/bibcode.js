@@ -24,8 +24,8 @@ function getRefByBibcode(req, res, next) {
                 Object.assign(result,{data: parseResult});
             } else {
                 //Object.assign(result,{status: "fail", count: 0});
-                res.status(404)
-                .send("Resource not found.");
+                res.status(204)
+                .send("No content.");
             }
             res.status(200)
                 .json(result);

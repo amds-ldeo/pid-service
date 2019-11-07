@@ -13,6 +13,7 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 | code  | Description |
 |-------|------|
 | 200 | Success |
+| 204 | No content |
 | 404 | Resource not found |
 | others | Error |
 
