@@ -127,7 +127,31 @@ module.exports = {
             }
             //skip if doctype="",null,undefined
             if(!!adsData.docs[0]['doctype']) {
-                Object.assign(result,{type: adsData.docs[0]['doctype']});
+                let docType = adsData.docs[0]['doctype'];
+                switch (docType) {
+                    case "article":
+                        Object.assign(result,{type: "Journal Article"});
+                        break;
+                    case "inproceedings":
+                        Object.assign(result,{type: "Proceedings Article"});
+                        break;
+                    case "inbook":
+                        Object.assign(result,{type: "Part"});
+                        break;
+                    case "mastersthesis":
+                    case "phdthesis":
+                        Object.assign(result,{type: "Dissertation"});
+                        break;
+                    case "techreport":
+                        Object.assign(result,{type: "Report"});
+                        break;
+                    case "misc":
+                        Object.assign(result,{type: "Other"});
+                        break;
+                    default:
+                        Object.assign(result,{type: docType.charAt(0).toUpperCase() + docType.slice(1)});  
+                }
+               // Object.assign(result,{type: adsData.docs[0]['doctype']});
             }
             //skip if volume="",null,undefined
             if(!!adsData.docs[0]['volume']) {
