@@ -1,10 +1,12 @@
 PID service Retrieve and customize metadata of works(paper, dataset, etc.) using PID like DOI, BIBCODE, etc. from trusted PID service provider Crossref, Datacite, ADS, etc. 
 
 # API Endpoints
-* {domainName}/ads/doi/{doi}
-* {domainName}/ads/bibcode/{bibcode}
-* {domainName}/crossref/doi/{doi}
-* {domainName}/datacite/doi/{doi}   just resolve ECL dataset DOIs
+| Endpoint  | Description |
+|-------|------|
+| {domainName}/ads/doi/{doi} | has DOI, also want to get Bibecode |
+| {domainName}/ads/bibcode/{bibcode} | BIBCODE only |
+| {domainName}/crossref/doi/{doi} | DOI only |
+| {domainName}/datacite/doi/{doi} | only resolve ECL dataset DOIs |
 
 # Reference
 * CrossRef API Reference: https://github.com/CrossRef/rest-api-doc
