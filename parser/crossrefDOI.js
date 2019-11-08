@@ -4,12 +4,12 @@ module.exports = {
         //skip if data={},null,undefined
         if (!!data && Object.keys(data).length>0) {
             let authors = [];
-            let sequenceNum = 0;
+            //let sequenceNum = 0;
             //skip if data.message.author=[],null,undefined
             if (!!data.message.author && Object.keys(data.message.author).length>0) {
                 for (j=0;j<data.message.author.length;j++) {
                     let author = {};
-                    sequenceNum = sequenceNum + 1;
+                    //sequenceNum = sequenceNum + 1;
                     // Skip if orcid = null, "", undefined          
                     if (!!data.message.author[j].ORCID) {
                         let orcid = data.message.author[j].ORCID;
@@ -25,19 +25,25 @@ module.exports = {
                         Object.assign(author,{affiliation: affiliations});
                     }                    
                     // Skip if familyName = null, "", undefined          
-                    if (!!data.message.author[j].family) {
-                        Object.assign(author,{familyName: data.message.author[j].family});
-                    }
+                   // if (!!data.message.author[j].family) {
+                   //     Object.assign(author,{familyName: data.message.author[j].family});
+                   // }
                     // Skip if givenName = null, "", undefined          
                     if (!!data.message.author[j].given) {
+                        Object.assign(author,{name: data.message.author[j].family + ', ' + data.message.author[j].given});
+                        Object.assign(author,{nameType: "Personal"});
+                        Object.assign(author,{familyName: data.message.author[j].family});
                         Object.assign(author,{givenName: data.message.author[j].given});
+                    } else {
+                        Object.assign(author,{name: data.message.author[j].family});
+                        Object.assign(author,{nameType: "Other"});
                     }
                     //skip if author={},null,undefined
                     if (!!author && Object.keys(author).length>0) {
-                        Object.assign(author,{sequence: sequenceNum});
+                        //Object.assign(author,{sequence: sequenceNum});
                         authors.push(author);
                     } else {
-                        sequenceNum = sequenceNum - 1;
+                        //sequenceNum = sequenceNum - 1;
                     }
                };
             }

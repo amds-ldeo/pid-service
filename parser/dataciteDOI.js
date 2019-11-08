@@ -5,12 +5,12 @@ module.exports = {
         //skip if toBeParsedData={},null,undefined
         if (!!toBeParsedData && Object.keys(toBeParsedData).length>0) {
             let authors = [];
-            let sequenceNum = 0;
+            //let sequenceNum = 0;
             //skip if data.creators=[],null,undefined
             if (!!toBeParsedData.creators && Object.keys(toBeParsedData.creators).length>0) {
                 for (j=0;j<toBeParsedData.creators.length;j++) {
                     let author = {};
-                    sequenceNum = sequenceNum + 1;
+                    //sequenceNum = sequenceNum + 1;
                     // Skip if orcid = null, "", undefined          
                     if (!!toBeParsedData.creators[j].nameIdentifiers && Object.keys(toBeParsedData.creators[j].nameIdentifiers).length>0) {
                         for (let element of toBeParsedData.creators[j].nameIdentifiers) {
@@ -25,11 +25,18 @@ module.exports = {
                     if (!!toBeParsedData.creators[j].affiliation && Object.keys(toBeParsedData.creators[j].affiliation).length>0) {
                         let affiliations = [];
                         for (let element of toBeParsedData.creators[j].affiliation) {
-                            let affiliation = element;
-                            affiliations.push(affiliation);
+                            //let affiliation = element;
+                            affiliations.push(element);
                         }
                         Object.assign(author,{affiliation: affiliations});
-                    }                    
+                    }        
+                    // Skip if name = null, "", undefined          
+                    if (!!toBeParsedData.creators[j].name) {
+                        Object.assign(author,{name: toBeParsedData.creators[j].name});
+                    }
+                    if (!!toBeParsedData.creators[j].nameType) {
+                        Object.assign(author,{nameType: toBeParsedData.creators[j].nameType});
+                    }                                 
                     // Skip if familyName = null, "", undefined          
                     if (!!toBeParsedData.creators[j].familyName) {
                         Object.assign(author,{familyName: toBeParsedData.creators[j].familyName});
@@ -40,11 +47,9 @@ module.exports = {
                     }
                     //skip if author={},null,undefined
                     if (!!author && Object.keys(author).length>0) {
-                        Object.assign(author,{sequence: sequenceNum});
+                       // Object.assign(author,{sequence: sequenceNum});
                         authors.push(author);
-                    } else {
-                        sequenceNum = sequenceNum - 1;
-                    }
+                    } 
                };
             }
             // Skip if doi = null, "", undefined

@@ -4,12 +4,12 @@ module.exports = {
         let result = {};
         if(adsData.numFound > 0) {
             let authors = [];
-            let sequenceNum = 0;
+            //let sequenceNum = 0;
             // Skip if data.message.author=[],null,undefined
             if(!!adsData.docs[0]['author'] && Object.keys(adsData.docs[0]['author']).length>0) {
                 for(j=0;j<adsData.docs[0]['author'].length;j++){
                     let author = {};
-                    sequenceNum = sequenceNum + 1;
+                    //sequenceNum = sequenceNum + 1;
                     // Remove leading and trailing space
                     let re = /^\s+|\s+$/g;
                     let name = adsData.docs[0]['author'][j].replace(re, "");
@@ -17,6 +17,7 @@ module.exports = {
                     // when found, removes the spaces and the comma from the string. 
                     // nameArray is the array returned as a result of split().
                     re = /\s*(?:,|$)\s*/;
+                    Object.assign(author,{name: name});
                     let nameArray = name.split(re);
                     
                     let orcid;
@@ -61,20 +62,25 @@ module.exports = {
                         Object.assign(author,{affiliation: affiliation});
                     }                    
                     // Skip if familyName = null, "", undefined          
-                    if (!!nameArray[0]) {
-                        Object.assign(author,{familyName: nameArray[0]});
-                    }
+                    //if (!!nameArray[0]) {
+                    //    Object.assign(author,{familyName: nameArray[0]});
+                   // }
                     // Skip if givenName = null, "", undefined          
                     if (!!nameArray[1]) {
+                        Object.assign(author,{nameType: "Personal"});
+                        Object.assign(author,{familyName: nameArray[0]});
                         Object.assign(author,{givenName: nameArray[1]});
+                    } else {
+                        Object.assign(author,{nameType: "Other"});
                     }
                     //skip if author={},null,undefined
                     if (!!author && Object.keys(author).length>0) {
-                        Object.assign(author,{sequence: sequenceNum});
+                        //Object.assign(author,{sequence: sequenceNum});
                         authors.push(author);
-                    } else {
-                        sequenceNum = sequenceNum - 1;
-                    }
+                    } 
+                    //else {
+                        //sequenceNum = sequenceNum - 1;
+                    //}
 
                 };
             }
