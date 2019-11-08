@@ -4,7 +4,7 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 * {domainName}/ads/doi/{doi}
 * {domainName}/ads/bibcode/{bibcode}
 * {domainName}/crossref/doi/{doi}
-* {domainName}/datacite/doi/{doi}
+* {domainName}/datacite/doi/{doi}   just resolve ECL dataset DOIs
 
 # Reference
 * CrossRef API Reference: https://github.com/CrossRef/rest-api-doc
@@ -25,7 +25,8 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 ## Main metadata
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| data | Object | Required | Resolved metadata |
+| data | Object | Optional | Resolved metadata if response code is 200 |
+| errors | Object | Optional | if response code is not 200 |
 
 
 ## Data component metadata
