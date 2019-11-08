@@ -6,6 +6,11 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 * {domainName}/crossref/doi/{doi}
 * {domainName}/datacite/doi/{doi}
 
+# Reference
+* CrossRef API Reference: https://github.com/CrossRef/rest-api-doc
+* Datacite API Reference: https://support.datacite.org/docs/api
+* ADS API Reference: https://github.com/adsabs/adsabs-dev-api
+
 # Metadata Properties
 
 ## Response code
@@ -48,11 +53,13 @@ PID service Retrieve and customize metadata of works(paper, dataset, etc.) using
 ### Author
 | Field | Type | Obligation | Description |
 |-------|------|----------|-------------|
+| name | String | Mandatory |  |
+| nameType | String | Mandatory |  |
+| familyName | String | Optional | appear in the block if nameType is 'Personal' |
+| givenName | String | Optional | appear in the block if nameType is 'Personal'|
 | orcid | String | Optional | ORCID |
 | affiliation | Array | Optional |  |
-| familyName | String | Mandatory |  |
-| givenName | String | No |  |
-| sequence | Integer | Mandatory |  |
+
 
 
 
