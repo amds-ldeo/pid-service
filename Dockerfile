@@ -19,7 +19,7 @@ RUN npm install --production
 RUN npm audit fix
 
 # Expose the listening port of your app
-EXPOSE 3000
+#EXPOSE 3000
 
 # Show current folder structure in logs
 RUN ls -al -R
