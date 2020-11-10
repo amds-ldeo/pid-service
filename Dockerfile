@@ -1,27 +1,28 @@
-FROM keymetrics/pm2:latest-alpine
+FROM node:14.5.0-stretch-slim as build
 
+RUN apt-get update -y && \
+    apt-get install -y \ 
+      build-essential
 
-RUN apk update && apk upgrade && \
-apk add --no-cache bash git openssh
+COPY ./package.json ./package-lock.json /build/
 
+WORKDIR /build
 
-# Set NODE_ENV to "production"
-RUN env NODE_ENV=production
+RUN npm ci
 
-# Bundle APP files
-RUN git clone https://github.com/amds-ldeo/pid-service.git
-WORKDIR /pid-service
+COPY ./ /build
 
-COPY .env .
-# Install app dependencies
-ENV NPM_CONFIG_LOGLEVEL warn
-RUN npm install --production
-RUN npm audit fix
+# The `app` stage is a slimmed down more secure image for running in production
+FROM node:14.5.0-stretch-slim as app
 
-# Expose the listening port of your app
-#EXPOSE 3000
+ARG VERSION=latest
 
-# Show current folder structure in logs
-RUN ls -al -R
+ENV VERSION=${VERSION}
 
-CMD [ "pm2-runtime", "start", "ecosystem.config.js"]
+COPY --from=build /build /srv
+
+WORKDIR /srv
+
+EXPOSE 3000
+
+CMD ["npm","start"]
