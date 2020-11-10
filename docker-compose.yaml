@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  astropid:
+    build: 
+      context: .
+      target: build
+    image: astromat/astropid:dev
+    environment:
+      CROSSREF_API_BASE_URL: https://api.crossref.org/works/
+      DATACITE_API_BASE_URL: https://api.datacite.org/dois/
+      ADS_BIBCODE_API_BASE_URL: https://api.adsabs.harvard.edu/v1/
+      ADS_API_KEY: qokRTSpeCLdB5aIkuhGUFRJW0ARp2JeFyukKIvXh
+    command: ["npm", "run", "start"]
+    networks: ["astromat"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/build
+networks: 
+  astromat: 

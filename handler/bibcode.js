@@ -3,11 +3,16 @@ var request = require('request');
 var parser = require('../parser/bibcode');
 
 
+const ADS_API_BIBCODE_QUERY="search/query?q=bibcode:";
+const ADS_API_DOI_QUERY="search/query?q=doi:";
+const ADS_API_FIELDS_RETURN="&fl=title,author,volume,issue,year,page_range,doctype,pub,doi,bibcode,orcid_pub,orcid_user,orcid_other,aff";
 
 //Get metadata of the reference by Bibcode
 function getRefByBibcode(req, res, next) {
-    let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_BIBCODE_QUERY
-     + encodeURIComponent(req.params.bibcode) + process.env.ADS_API_FIELDS_RETURN;
+   // let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_BIBCODE_QUERY
+   //  + encodeURIComponent(req.params.bibcode) + process.env.ADS_API_FIELDS_RETURN;
+     let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + ADS_API_BIBCODE_QUERY
+     + encodeURIComponent(req.params.bibcode) + ADS_API_FIELDS_RETURN;
     console.log(requestUrl);
     let requestOpt = {
         url: requestUrl,
@@ -64,9 +69,10 @@ function getRefByBibcode(req, res, next) {
 
 //Get metadata of the reference by DOI
 function getRefByDoi(req, res, next) {
-    let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_DOI_QUERY
-     + encodeURIComponent('"'+req.params.doi+'"') + process.env.ADS_API_FIELDS_RETURN;
-     
+   // let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + process.env.ADS_API_DOI_QUERY
+    // + encodeURIComponent('"'+req.params.doi+'"') + process.env.ADS_API_FIELDS_RETURN;
+     let requestUrl = process.env.ADS_BIBCODE_API_BASE_URL + ADS_API_DOI_QUERY
+     + encodeURIComponent('"'+req.params.doi+'"') + ADS_API_FIELDS_RETURN;
     let requestOpt = {
         url: requestUrl,
         auth: {
