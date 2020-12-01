@@ -1,0 +1,84 @@
+name: Deploy
+
+on:
+  deployment:
+    branches:
+      - master
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOYER_AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+  IMAGE_REPOSITORY: ${{ secrets.IMAGE_REPOSITORY }}
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
+        id: ACTIONS_ALLOW_UNSECURE_COMMANDS
+        run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Set environment
+        run: |
+          echo "::set-env name=VERSION::sha-$(echo "${{ github.event.deployment.sha }}" | cut -c1-7)"
+
+      - name: Update deployment status
+        run: |
+          curl -X POST \
+            --url ${{ github.event.deployment.statuses_url }} \
+            -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            -H 'content-type: application/json' \
+            -H 'accept: application/vnd.github.flash-preview+json' \
+            -d "{ \
+                  \"environment\": \"${{ github.event.deployment.environment }}\", \
+                  \"state\": \"in_progress\", \
+                  \"description\": \"Deploying image to fargate\" \
+                }"
+
+      - name: Trigger update to production Fargate cluster
+        run: |
+          aws cloudformation update-stack \
+            --stack-name production-pid-service-fargate-service \
+            --parameters ParameterKey=ImageTag,ParameterValue=$VERSION \
+            --parameters ParameterKey=ServiceName,UsePreviousValue=true \
+            --parameters ParameterKey=Environment,UsePreviousValue=true \
+            --use-previous-template || true
+
+        run: |
+          aws cloudformation update-stack \
+            --stack-name staging-pid-service-fargate-service \
+            --parameters ParameterKey=ImageTag,ParameterValue=$VERSION \
+            --parameters ParameterKey=ServiceName,UsePreviousValue=true \
+            --parameters ParameterKey=Environment,UsePreviousValue=true \
+            --use-previous-template || true
+
+      - name: Set status on failure
+        if: ${{ failure() }}
+        run: |
+          echo "::set-env name=STATUS::failure"
+
+      - name: Set status on success
+        if: ${{ success() }}
+        run: |
+          echo "::set-env name=STATUS::success"
+
+      - name: Update deployment status
+        if: ${{ always() }}
+        run: |
+          curl -X POST \
+            --url ${{ github.event.deployment.statuses_url }} \
+            -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            -H 'content-type: application/json' \
+            -d "{ \
+                  \"environment\": \"${{ github.event.deployment.environment }}\", \
+                  \"state\": \"${STATUS}\", \
+                  \"description\": \"Deployment finished successfully.\" \
+                }"
