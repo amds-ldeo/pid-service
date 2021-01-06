@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+ push:
+   branches:
+     - master
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
@@ -45,18 +48,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_SECRET }}
 
-      - uses: docker/build-push-action@v2
+      -
+        name: Build and push
         id: docker_build
+        uses: docker/build-push-action@v2
         with:
           push: true
+          file: ./Dockerfile
           build-args: VERSION=${{ env.VERSION }}
-          tags: ${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION }}
+          cache-from: ${{ env.IMAGE_REPOSITORY }}:buildcache
+          tags: |
+            ${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION}}
+            ${{ env.IMAGE_REPOSITORY }}:buildcache
 
       - name: Trigger update to staging Fargate cluster
         run: |
           aws cloudformation update-stack \
             --stack-name staging-pid-service-fargate-service \
-            --parameters ParameterKey=ImageTag,ParameterValue=$VERSION \
-            --parameters ParameterKey=ServiceName,UsePreviousValue=true \
-            --parameters ParameterKey=Environment,UsePreviousValue=true \
+            --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
+            ParameterKey=ServiceName,UsePreviousValue=true \
+            ParameterKey=Environment,UsePreviousValue=true \
             --use-previous-template || true
