@@ -4,12 +4,16 @@ on:
  push:
    branches:
      - master
+     - add_earthchem_flow
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOYER_AWS_SECRET_ACCESS_KEY }}
+  EC_AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_EC_AWS_ACCESS_KEY_ID }}
+  EC_AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOYER_EC_AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
   IMAGE_REPOSITORY: ${{ secrets.IMAGE_REPOSITORY }}
+  EC_IMAGE_REPOSITORY: ${{ secrets.EC_IMAGE_REPOSITORY }}
 
 jobs:
 
@@ -56,16 +60,45 @@ jobs:
           push: true
           file: ./Dockerfile
           build-args: VERSION=${{ env.VERSION }}
-          cache-from: ${{ env.IMAGE_REPOSITORY }}:buildcache
+          #cache-from: ${{ env.IMAGE_REPOSITORY }}:buildcache
           tags: |
             ${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION}}
-            ${{ env.IMAGE_REPOSITORY }}:buildcache
+            ${{ env.EC_IMAGE_REPOSITORY }}:${{ env.VERSION}}
+           # ${{ env.IMAGE_REPOSITORY }}:buildcache
 
-      - name: Trigger update to staging Fargate cluster
-        run: |
-          aws cloudformation update-stack \
-            --stack-name staging-pid-service-fargate-service \
-            --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
-            ParameterKey=ServiceName,UsePreviousValue=true \
-            ParameterKey=Environment,UsePreviousValue=true \
-            --use-previous-template || true
+      # -
+      #   name: Configure EarthChem AWS credentials
+      #   id: ec-creds
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ env.EC_AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ env.EC_AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
+           
+      # -
+      #   name: Trigger update to EarthChem staging Fargate cluster
+      #   run: |
+      #     aws cloudformation update-stack \
+      #       --stack-name staging-pid-service-fargate-service \
+      #       --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
+      #       ParameterKey=ServiceName,UsePreviousValue=true \
+      #       ParameterKey=Environment,UsePreviousValue=true \
+      #       --use-previous-template || true
+      # -
+      #   name: Configure Astromat AWS credentials
+      #   id: ec-creds
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
+           
+      # -
+      #   name: Trigger update to Astromat staging Fargate cluster
+      #   run: |
+      #     aws cloudformation update-stack \
+      #       --stack-name staging-pid-service-fargate-service \
+      #       --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
+      #       ParameterKey=ServiceName,UsePreviousValue=true \
+      #       ParameterKey=Environment,UsePreviousValue=true \
+      #       --use-previous-template || true
