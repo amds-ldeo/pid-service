@@ -4,16 +4,6 @@ on:
  push:
    branches:
      - master
-     - add_earthchem_flow
-
-env:
-  ASTRO_AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
-  ASTRO_AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOYER_AWS_SECRET_ACCESS_KEY }}
-  #EC_AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOYER_EC_AWS_ACCESS_KEY_ID }}
-  #EC_AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOYER_EC_AWS_SECRET_ACCESS_KEY }}
-  #AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-  #ASTRO_IMAGE_REPOSITORY: ${{ secrets.IMAGE_REPOSITORY }}
-  #EC_IMAGE_REPOSITORY: ${{ secrets.EC_IMAGE_REPOSITORY }}
 
 jobs:
 
@@ -33,10 +23,6 @@ jobs:
         run: |
           echo "VERSION=sha-$(echo "$GITHUB_SHA" | cut -c1-7)" >> $GITHUB_ENV
 
-      # -
-      #   name: Set image info
-      #   run: |
-      #     echo "IMAGE=${IMAGE_REPOSITORY}:${VERSION}" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -60,11 +46,9 @@ jobs:
           push: true
           file: ./Dockerfile
           build-args: VERSION=${{ env.VERSION }}
-          #cache-from: ${{ env.IMAGE_REPOSITORY }}:buildcache
           tags: |
             ${{ secrets.ASTRO_IMAGE_REPOSITORY }}:${{ env.VERSION }}
             ${{ secrets.EC_IMAGE_REPOSITORY }}:${{ env.VERSION }}
-           # ${{ env.IMAGE_REPOSITORY }}:buildcache
 
       -
         name: Configure EarthChem AWS credentials
@@ -84,21 +68,21 @@ jobs:
             ParameterKey=ServiceName,UsePreviousValue=true \
             ParameterKey=Environment,UsePreviousValue=true \
             --use-previous-template || true
-      # -
-      #   name: Configure Astromat AWS credentials
-      #   id: astro-creds
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ env.ASTRO_AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ env.ASTRO_AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      -
+        name: Configure Astromat AWS credentials
+        id: astro-creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEPLOYER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION}}
            
-      # -
-      #   name: Trigger update to Astromat staging Fargate cluster
-      #   run: |
-      #     aws cloudformation update-stack \
-      #       --stack-name staging-pid-service-fargate-service \
-      #       --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
-      #       ParameterKey=ServiceName,UsePreviousValue=true \
-      #       ParameterKey=Environment,UsePreviousValue=true \
-      #       --use-previous-template || true
+      -
+        name: Trigger update to Astromat staging Fargate cluster
+        run: |
+          aws cloudformation update-stack \
+            --stack-name staging-pid-service-fargate-service \
+            --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
+            ParameterKey=ServiceName,UsePreviousValue=true \
+            ParameterKey=Environment,UsePreviousValue=true \
+            --use-previous-template || true
