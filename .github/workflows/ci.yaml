@@ -66,24 +66,24 @@ jobs:
             ${{ env.EC_IMAGE_REPOSITORY }}:${{ env.VERSION}}
            # ${{ env.IMAGE_REPOSITORY }}:buildcache
 
-      # -
-      #   name: Configure EarthChem AWS credentials
-      #   id: ec-creds
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ env.EC_AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ env.EC_AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      -
+        name: Configure EarthChem AWS credentials
+        id: ec-creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.EC_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.EC_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
            
-      # -
-      #   name: Trigger update to EarthChem staging Fargate cluster
-      #   run: |
-      #     aws cloudformation update-stack \
-      #       --stack-name staging-pid-service-fargate-service \
-      #       --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
-      #       ParameterKey=ServiceName,UsePreviousValue=true \
-      #       ParameterKey=Environment,UsePreviousValue=true \
-      #       --use-previous-template || true
+      -
+        name: Trigger update to EarthChem staging Fargate cluster
+        run: |
+          aws cloudformation update-stack \
+            --stack-name staging-pid-service-fargate-service \
+            --parameters ParameterKey=ImageTag,ParameterValue=${{ env.VERSION}} \
+            ParameterKey=ServiceName,UsePreviousValue=true \
+            ParameterKey=Environment,UsePreviousValue=true \
+            --use-previous-template || true
       # -
       #   name: Configure Astromat AWS credentials
       #   id: ec-creds
