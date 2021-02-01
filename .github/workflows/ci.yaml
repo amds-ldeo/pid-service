@@ -73,8 +73,8 @@ jobs:
         id: astro-creds
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.DEPLOYER_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.DEPLOYER_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.DEPLOYER_ASTRO_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEPLOYER_ASTRO_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION}}
            
       -
