@@ -86,7 +86,31 @@ module.exports = {
 
             // Skip if type = null, "", undefined         
             if (!!data.message.type) {
-                Object.assign(result,{type: data.message.type});
+                switch ((data.message.type).toLowerCase()) {
+                    case "journal-article":
+                        Object.assign(result,{type: "ARTICLE"});
+                        break;
+                    case "proceedings-article":
+                        Object.assign(result,{type: "PROCEEDINGS"});
+                        break;
+                    case "book":
+                        Object.assign(result,{type: "BOOK"});
+                        break;
+                    case "book-part":
+                        Object.assign(result,{type: "INBOOK"});
+                        break;
+                    case "dissertation":
+                        Object.assign(result,{type: "DISSERTATION"});
+                        break;
+                    case "report":
+                        Object.assign(result,{type: "REPORT"});
+                        break;
+                    case "dataset":
+                        Object.assign(result,{type: "DATASET"});
+                        break;
+                    default:
+                        Object.assign(result,{type: "MISC"});  
+                }
             }
 
             // Skip if volume = null, "", undefined         

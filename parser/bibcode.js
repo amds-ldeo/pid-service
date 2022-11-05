@@ -130,26 +130,26 @@ module.exports = {
                 let docType = adsData.docs[0]['doctype'];
                 switch (docType) {
                     case "article":
-                        Object.assign(result,{type: "Journal Article"});
+                        Object.assign(result,{type: "ARTICLE"});
+                        break;
+                    case "abstract":
+                        Object.assign(result,{type: "ABSTRACT"});
                         break;
                     case "inproceedings":
-                        Object.assign(result,{type: "Proceedings Article"});
+                        Object.assign(result,{type: "PROCEEDINGS"});
                         break;
                     case "inbook":
-                        Object.assign(result,{type: "Part"});
+                        Object.assign(result,{type: "INBOOK"});
                         break;
                     case "mastersthesis":
                     case "phdthesis":
-                        Object.assign(result,{type: "Dissertation"});
+                        Object.assign(result,{type: "DISSERTATION"});
                         break;
                     case "techreport":
-                        Object.assign(result,{type: "Report"});
-                        break;
-                    case "misc":
-                        Object.assign(result,{type: "Other"});
+                        Object.assign(result,{type: "REPORT"});
                         break;
                     default:
-                        Object.assign(result,{type: docType.charAt(0).toUpperCase() + docType.slice(1)});  
+                        Object.assign(result,{type: "MISC"}); 
                 }
                // Object.assign(result,{type: adsData.docs[0]['doctype']});
             }
