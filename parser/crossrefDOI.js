@@ -31,13 +31,13 @@ module.exports = {
                     // Skip if name = null, "", undefined
                     // name won't appear at the same time as family and given          
                     if (!!data.message.author[j].name) {
+                        Object.assign(author,{name: data.message.author[j].name});
+                        Object.assign(author,{nameType: "Other"});
+                    } else {
                         Object.assign(author,{name: data.message.author[j].family + ', ' + data.message.author[j].given});
                         Object.assign(author,{nameType: "Personal"});
                         Object.assign(author,{familyName: data.message.author[j].family});
                         Object.assign(author,{givenName: data.message.author[j].given});
-                    } else {
-                        Object.assign(author,{name: data.message.author[j].name});
-                        Object.assign(author,{nameType: "Other"});
                     }
                     //skip if author={},null,undefined
                     if (!!author && Object.keys(author).length>0) {
