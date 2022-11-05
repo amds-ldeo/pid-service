@@ -24,17 +24,19 @@ function getRefByBibcode(req, res, next) {
     request(requestOpt, function (error, response, body) {
         let result = {};
         let newStatusCode = null;
+        const neededKeys = ['identifiers', 'title', 'publicationYear','type','authors'];
         if (response.statusCode == 200) {
             //let result = {};
             let parseResult = parser.parseBIBCODE(JSON.parse(body));
-            if(!!parseResult && Object.keys(parseResult).length>0){
+            let isOk = neededKeys.every(key => Object.keys(parseResult).includes(key));
+            if(!!parseResult && Object.keys(parseResult).length>0 && isOk){
                 Object.assign(result,{data: parseResult});
                 newStatusCode = 200;
             } else {
                 //Object.assign(result,{status: "fail", count: 0});
                 let errors=[];
                 let errorEle = {};
-                Object.assign(errorEle,{status: "204", title: "The related content does not exist although the resource exists."});
+                Object.assign(errorEle,{status: "204", title: "The related content(specially mandatory fields including title,publicationYear,type,identifiers, and authors) does not exist although the resource exists.",data: parseResult});
                 errors.push(errorEle);
                 Object.assign(result,{errors:errors});
                 newStatusCode = 204;
@@ -84,17 +86,19 @@ function getRefByDoi(req, res, next) {
     request(requestOpt, function (error, response, body) {
         let result = {};
         let newStatusCode = null;
+        const neededKeys = ['identifiers', 'title', 'publicationYear','type','authors'];
         if (response.statusCode == 200) {
             //let result = {};
             let parseResult = parser.parseBIBCODE(JSON.parse(body));
-            if(!!parseResult && Object.keys(parseResult).length>0){
+            let isOk = neededKeys.every(key => Object.keys(parseResult).includes(key));
+            if(!!parseResult && Object.keys(parseResult).length>0 && isOk){
                 //Object.assign(result,{status: "ok", count: 1, data: parseResult});
                 Object.assign(result,{data: parseResult});
                 newStatusCode = 200;
             } else {
                 let errors=[];
                 let errorEle = {};
-                Object.assign(errorEle,{status: "204", title: "The related content does not exist although the resource exists."});
+                Object.assign(errorEle,{status: "204", title: "The related content(specially mandatory fields including title,publicationYear,type,identifiers, and authors) does not exist although the resource exists.",data: parseResult});
                 errors.push(errorEle);
                 Object.assign(result,{errors:errors});
                 newStatusCode = 204;
