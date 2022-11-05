@@ -100,7 +100,7 @@ module.exports = {
 
             // Skip if page = null, "", undefined                   
             if (!!data.message.page) {
-                Object.assign(result,{pages: data.message.pages});
+                Object.assign(result,{pages: data.message.page});
             }
                 
             // Skip if authors =[], null, "", undefined                   
