@@ -98,8 +98,8 @@ module.exports = {
                 Object.assign(result,{issue: data.message.issue});
             }
 
-            // Skip if pages = null, "", undefined                   
-            if (!!data.message.pages) {
+            // Skip if page = null, "", undefined                   
+            if (!!data.message.page) {
                 Object.assign(result,{pages: data.message.pages});
             }
                 
