@@ -41,6 +41,7 @@ jobs:
                   \"description\": \"Deploying image to fargate\" \
                 }"
 
+
       - name: Trigger update to production Fargate cluster
         run: |
           aws cloudformation update-stack \
