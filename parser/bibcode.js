@@ -142,6 +142,8 @@ module.exports = {
                         Object.assign(result,{type: "INBOOK"});
                         break;
                     case "mastersthesis":
+                        Object.assign(result,{type: "THESIS"});
+                        break;
                     case "phdthesis":
                         Object.assign(result,{type: "DISSERTATION"});
                         break;
