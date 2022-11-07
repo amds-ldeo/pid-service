@@ -50,14 +50,6 @@ jobs:
             --parameters ParameterKey=Environment,UsePreviousValue=true \
             --use-previous-template || true
 
-        run: |
-          aws cloudformation update-stack \
-            --stack-name staging-pid-service-fargate-service \
-            --parameters ParameterKey=ImageTag,ParameterValue=$VERSION \
-            --parameters ParameterKey=ServiceName,UsePreviousValue=true \
-            --parameters ParameterKey=Environment,UsePreviousValue=true \
-            --use-previous-template || true
-
       - name: Set status on failure
         if: ${{ failure() }}
         run: |
