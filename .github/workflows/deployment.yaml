@@ -54,12 +54,12 @@ jobs:
       - name: Set status on failure
         if: ${{ failure() }}
         run: |
-          echo "::set-env name=STATUS::failure"
+          echo "STATUS=failure" >> $GITHUB_ENV
 
       - name: Set status on success
         if: ${{ success() }}
         run: |
-          echo "::set-env name=STATUS::success"
+          echo "STATUS=success" >> $GITHUB_ENV
 
       - name: Update deployment status
         if: ${{ always() }}
