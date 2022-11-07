@@ -4,7 +4,7 @@ GITHUB_HUB_IMAGE=astromat/github-hub
 GIT_REPOSITORY=amds-ldeo/pid-service
 VERSION=${DEPLOY_VERSION:-master}
 
-docker run --rm -it -v ${HOME}/.config:/root/.config $GITHUB_HUB_IMAGE \
+docker run --rm -it $GITHUB_HUB_IMAGE \
   api -X POST /repos/${GIT_REPOSITORY}/deployments \
   -F ref=${VERSION} \
   -F environment=production
