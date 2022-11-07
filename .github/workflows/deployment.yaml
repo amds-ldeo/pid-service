@@ -46,10 +46,9 @@ jobs:
         run: |
           aws cloudformation update-stack \
             --stack-name production-pid-service-fargate-service \
-            --parameters ParameterKey=ImageTag,ParameterValue=${{env.VERSION}} \
-            --parameters ParameterKey=ServiceName,ParameterValue=pid-service \
-            --parameters ParameterKey=Environment,ParameterValue=production \
-            --use-previous-template || true
+            --use-previous-template \
+            --parameters ParameterKey=ImageTag,ParameterValue=${{env.VERSION}} ParameterKey=ServiceName,UsePreviousValue=true ParameterKey=Environment,UsePreviousValue=true
+            
 
       - name: Set status on failure
         if: ${{ failure() }}
